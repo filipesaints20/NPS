@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pesquisa NPS Anônima</title>
+  <title>Pesquisa NPS Effico Saneamento</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
     form { border: 1px solid #ddd; border-radius: 10px; padding: 20px; }
@@ -20,11 +20,11 @@
   </style>
 </head>
 <body>
-  <h1>Pesquisa NPS</h1>
-  <p>De forma anônima, avalie nosso departamento. Nenhum dado pessoal é coletado.</p>
+  <h1>Pesquisa</h1>
+  <p>O NPS da Effico Saneamento mede o quanto os clientes recomendariam a empresa. É uma ferramenta simples que mostra o nível de satisfação e ajuda a melhorar os serviços e fortalecer a confiança nos projetos.</p>
 
   <form id="nps-form">
-    <label>De 0 a 10, o quanto você recomendaria nossa área a um amigo ou colega?</label>
+    <label>1. Em uma escala de 0 a 10  você indicar os serviços da Effico Saneamento?</label>
     <div class="nps-scale">
       <label>0<br><input type="radio" name="nps" value="0" required></label>
       <label>1<br><input type="radio" name="nps" value="1"></label>
@@ -39,7 +39,7 @@
       <label>10<br><input type="radio" name="nps" value="10"></label>
     </div>
 
-    <label for="comentario">Comentário (opcional)</label>
+    <label for="comentario">2. Espaço para deixar elogios, sugestões e criticas.</label>
     <textarea id="comentario" name="comentario"></textarea>
 
     <input type="hidden" id="token" name="token">
@@ -48,7 +48,7 @@
   </form>
 
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/SEU_WEB_APP_URL/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwoMRVNOa8o0J0NPn6HJcnUqJv_fEpnTaz71clCwkogz1L7PlFRXSpL3ZyvXyrWiQFvow/exec";
 
     document.addEventListener("DOMContentLoaded", () => {
       const qs = new URLSearchParams(window.location.search);
