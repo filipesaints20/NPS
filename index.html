@@ -27,7 +27,7 @@
   <h1>Pesquisa NPS</h1>
   
   <form id="nps-form">
-    <label>1. De forma anônima, avalie nossa empresa. Nenhum dado pessoal é coletado. Em uma escala de 0 a 10 você indicaria os serviços da Effico Saneamento?</label>
+    <label>1. Avalie nossa empresa. Nenhum dado pessoal é coletado. Em uma escala de 0 a 10 você indicaria os serviços da Effico Saneamento?</label>
     <div class="nps-scale">
       <label>0<br><input type="radio" name="nps" value="0" required></label>
       <label>1<br><input type="radio" name="nps" value="1"></label>
@@ -79,7 +79,7 @@
 
           const data = await res.json();
           if (data.ok) {
-            statusBox.textContent = "Resposta registrada com sucesso para " + data.dept;
+            statusBox.textContent = "Muito obrigado, Sua resposta foi registrada com sucesso para " + data.dept;
             form.reset();
           } else {
             statusBox.textContent = "Erro: " + (data.error || "Falha desconhecida");
