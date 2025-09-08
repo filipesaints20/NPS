@@ -122,7 +122,6 @@
     <fieldset>
       <legend><label>1. Em uma escala de 0 a 10, você indicaria os serviços da Effico Saneamento?</label></legend>
       <div class="nps-scale">
-        <!-- Geração dinâmica dos botões de 0 a 10 -->
         <script>
           for (let i = 0; i <= 10; i++) {
             document.write(`<label>${i}<br><input type="radio" name="nps" value="${i}" ${i === 0 ? 'required' : ''}></label>`);
@@ -140,7 +139,7 @@
   </form>
 
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyiNc3kX-eLUrmFfAqMwCQ1aWL_6Lobe51JaWDfiL7t3V5GbWkqm0dxyg8hagY410a25Q/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby6B0jPA0MdryLeOMP-7mnkZMGF3qM7turJCUGUuSAHrLKkHX7kVIhTOL4x3KYXfTqOoA/exec";
 
     document.addEventListener("DOMContentLoaded", () => {
       const qs = new URLSearchParams(window.location.search);
@@ -177,15 +176,14 @@
 
           const data = await res.json();
           if (data.ok) {
-            statusBox.textContent = "✅ Muito obrigado! Sua resposta foi registrada com sucesso para " + data.dept;
-            statusBox.className = "success";
-            form.reset();
+            localStorage.setItem("nps_" + token, "respondido");
+            window.location.href = "agradecimento.html";
           } else {
-            statusBox.textContent = "Erro: " + (data.error || "Falha desconhecida");
+            statusBox.textContent = "⚠️ Erro: " + (data.error || "Falha desconhecida");
             statusBox.className = "error";
           }
         } catch (err) {
-          statusBox.textContent = "Erro ao enviar: " + err.message;
+          statusBox.textContent = "❌ Erro ao enviar: " + err.message;
           statusBox.className = "error";
         }
       });
@@ -193,4 +191,5 @@
   </script>
 </body>
 </html>
+
 
