@@ -122,17 +122,12 @@
     <fieldset>
       <legend><label>1. Em uma escala de 0 a 10, você indicaria os serviços da Effico Saneamento?</label></legend>
       <div class="nps-scale">
-        <label>0<br><input type="radio" name="nps" value="0" required></label>
-        <label>1<br><input type="radio" name="nps" value="1"></label>
-        <label>2<br><input type="radio" name="nps" value="2"></label>
-        <label>3<br><input type="radio" name="nps" value="3"></label>
-        <label>4<br><input type="radio" name="nps" value="4"></label>
-        <label>5<br><input type="radio" name="nps" value="5"></label>
-        <label>6<br><input type="radio" name="nps" value="6"></label>
-        <label>7<br><input type="radio" name="nps" value="7"></label>
-        <label>8<br><input type="radio" name="nps" value="8"></label>
-        <label>9<br><input type="radio" name="nps" value="9"></label>
-        <label>10<br><input type="radio" name="nps" value="10"></label>
+        <!-- Geração dinâmica dos botões de 0 a 10 -->
+        <script>
+          for (let i = 0; i <= 10; i++) {
+            document.write(`<label>${i}<br><input type="radio" name="nps" value="${i}" ${i === 0 ? 'required' : ''}></label>`);
+          }
+        </script>
       </div>
     </fieldset>
 
@@ -182,11 +177,9 @@
 
           const data = await res.json();
           if (data.ok) {
-            statusBox.textContent = "Muito obrigado, sua resposta foi registrada.";
+            statusBox.textContent = "✅ Muito obrigado! Sua resposta foi registrada com sucesso para " + data.dept;
             statusBox.className = "success";
             form.reset();
-            form.style.display = "none";
-            localStorage.setItem("nps_" + token, "respondido");
           } else {
             statusBox.textContent = "Erro: " + (data.error || "Falha desconhecida");
             statusBox.className = "error";
