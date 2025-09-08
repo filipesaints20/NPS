@@ -122,12 +122,17 @@
     <fieldset>
       <legend><label>1. Em uma escala de 0 a 10, você indicaria os serviços da Effico Saneamento?</label></legend>
       <div class="nps-scale">
-        <!-- Geração dinâmica dos botões de 0 a 10 -->
-        <script>
-          for (let i = 0; i <= 10; i++) {
-            document.write(`<label>${i}<br><input type="radio" name="nps" value="${i}" ${i === 0 ? 'required' : ''}></label>`);
-          }
-        </script>
+        <label>0<br><input type="radio" name="nps" value="0" required></label>
+        <label>1<br><input type="radio" name="nps" value="1"></label>
+        <label>2<br><input type="radio" name="nps" value="2"></label>
+        <label>3<br><input type="radio" name="nps" value="3"></label>
+        <label>4<br><input type="radio" name="nps" value="4"></label>
+        <label>5<br><input type="radio" name="nps" value="5"></label>
+        <label>6<br><input type="radio" name="nps" value="6"></label>
+        <label>7<br><input type="radio" name="nps" value="7"></label>
+        <label>8<br><input type="radio" name="nps" value="8"></label>
+        <label>9<br><input type="radio" name="nps" value="9"></label>
+        <label>10<br><input type="radio" name="nps" value="10"></label>
       </div>
     </fieldset>
 
@@ -140,7 +145,7 @@
   </form>
 
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyiNc3kX-eLUrmFfAqMwCQ1aWL_6Lobe51JaWDfiL7t3V5GbWkqm0dxyg8hagY410a25Q/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby6B0jPA0MdryLeOMP-7mnkZMGF3qM7turJCUGUuSAHrLKkHX7kVIhTOL4x3KYXfTqOoA/exec";
 
     document.addEventListener("DOMContentLoaded", () => {
       const qs = new URLSearchParams(window.location.search);
@@ -149,6 +154,15 @@
 
       const form = document.getElementById("nps-form");
       const statusBox = document.getElementById("status");
+
+      // Verifica se já foi respondido neste navegador
+      const preenchido = localStorage.getItem("nps_" + token);
+      if (preenchido) {
+        form.style.display = "none";
+        statusBox.textContent = "Você já respondeu esta pesquisa. Obrigado!";
+        statusBox.className = "success";
+        return;
+      }
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -166,19 +180,19 @@
             body: body.toString()
           });
 
-          if (!res.ok) throw new Error("Falha no envio");
-
           const data = await res.json();
           if (data.ok) {
-            statusBox.textContent = "✅ Muito obrigado! Sua resposta foi registrada com sucesso para " + data.dept;
+            statusBox.textContent = "Muito obrigado, sua resposta foi registrada.";
             statusBox.className = "success";
             form.reset();
+            form.style.display = "none";
+            localStorage.setItem("nps_" + token, "respondido");
           } else {
-            statusBox.textContent = "⚠️ Erro: " + (data.error || "Falha desconhecida");
+            statusBox.textContent = "Erro: " + (data.error || "Falha desconhecida");
             statusBox.className = "error";
           }
         } catch (err) {
-          statusBox.textContent = "❌ Erro ao enviar: " + err.message;
+          statusBox.textContent = "Erro ao enviar: " + err.message;
           statusBox.className = "error";
         }
       });
@@ -186,3 +200,4 @@
   </script>
 </body>
 </html>
+
