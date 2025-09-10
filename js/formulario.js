@@ -32,21 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     section.className = "departamento-section";
 
     const escalaHTML = [...Array(11).keys()].map(i => `
-      <button type="button" class="nps-btn" data-value="${i}" style="
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        border: 2px solid #000;
-        background-color: #fff;
-        color: #000;
-        font-size: 0.85rem;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 2px;
-        cursor: pointer;
-      ">${i}</button>
+      <button type="button" class="nps-btn" data-value="${i}">${i}</button>
     `).join("");
 
     section.innerHTML = `
@@ -62,8 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("nps-btn")) {
       const group = e.target.closest(".nps-scale");
-      group.querySelectorAll(".nps-btn").forEach(btn => btn.style.backgroundColor = "#fff");
-      e.target.style.backgroundColor = "#00ffd5";
+      group.querySelectorAll(".nps-btn").forEach(btn => btn.classList.remove("selected"));
+      e.target.classList.add("selected");
 
       const name = "nps_" + group.dataset.dep;
       let input = document.querySelector(`input[name="${name}"]`);
