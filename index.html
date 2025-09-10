@@ -5,7 +5,171 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pesquisa NPS Effico Saneamento</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      max-width: 720px;
+      width: 100%;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      color: #000;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+      color: #000;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .nps-scale {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 1rem 0;
+    }
+
+    .nps-scale label {
+      flex: 1 0 8%;
+      text-align: center;
+      font-weight: normal;
+      font-size: 0.9rem;
+      position: relative;
+    }
+
+    input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #00b7ff;
+      border-radius: 50%;
+      background-color: #fff;
+      cursor: pointer;
+      position: relative;
+      margin-top: 5px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    input[type="radio"]::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: transparent;
+      transition: background-color 0.2s ease;
+    }
+
+    input[type="radio"]:checked::after {
+      background-color: #00b7ff;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      resize: vertical;
+      box-sizing: border-box;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      background: #00ff9d;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 1.5rem;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #00ffd5;
+    }
+
+    #status {
+      margin-top: 1rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #status.success {
+      color: green;
+    }
+
+    #status.error {
+      color: red;
+    }
+
+    section {
+      margin-top: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    @media (max-width: 480px) {
+      form {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .nps-scale label {
+        flex: 1 0 18%;
+        font-size: 0.8rem;
+      }
+
+      button {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <form id="nps-form">
@@ -25,6 +189,6 @@
     <div id="status" aria-live="polite"></div>
   </form>
 
-  <script src="formulario.js"></script>
+  <script src="js/formulario.js"></script>
 </body>
 </html>
