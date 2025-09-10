@@ -57,44 +57,36 @@
       flex-wrap: wrap;
       justify-content: space-between;
       margin: 1rem 0;
+      gap: 8px;
     }
 
-    .nps-scale label {
-      flex: 1 0 8%;
-      text-align: center;
-      font-weight: normal;
-      font-size: 0.9rem;
+    .custom-radio {
       position: relative;
-    }
-
-    input[type="radio"] {
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border: 2px solid #000000;
-      border-radius: 100%;
-      background-color: #fff;
+      padding-left: 28px;
       cursor: pointer;
-      position: relative;
-      margin-top: 5px;
-      display: inline-block;
-      vertical-align: middle;
+      font-size: 0.9rem;
+      user-select: none;
     }
 
-    input[type="radio"]::after {
-      content: "";
+    .custom-radio input[type="radio"] {
       position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 18px;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .custom-radio span {
+      position: absolute;
+      top: 2px;
+      left: 0;
       height: 18px;
+      width: 18px;
+      background-color: #fff;
+      border: 2px solid #000;
       border-radius: 50%;
-      background-color: transparent;
       transition: background-color 0.2s ease;
-}
+    }
 
-
-    input[type="radio"]:checked::after {
+    .custom-radio input:checked ~ span {
       background-color: #00ffd5;
     }
 
@@ -161,9 +153,8 @@
         font-size: 1.2rem;
       }
 
-      .nps-scale label {
-        flex: 1 0 18%;
-        font-size: 0.8rem;
+      .nps-scale {
+        justify-content: flex-start;
       }
 
       button {
@@ -183,7 +174,25 @@
       *Quando você enviar este formulário, ele não coletará automaticamente seus detalhes, como nome e endereço de email, a menos que você mesmo o forneça.*
     </p>
 
-    <fieldset id="perguntas-container"></fieldset>
+    <fieldset id="perguntas-container">
+      <section>
+        <h2>CEO</h2>
+        <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>CEO</strong>?</label>
+        <div class="nps-scale">
+          <!-- Exemplo de escala 0 a 10 -->
+          ${[...Array(11).keys()].map(i => `
+            <label class="custom-radio">
+              ${i}
+              <input type="radio" name="nps_CEO" value="${i}" ${i === 0 ? 'required' : ''}>
+              <span></span>
+            </label>
+          `).join('')}
+        </div>
+
+        <label for="comentario_CEO">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>CEO</strong>:</label>
+        <textarea id="comentario_CEO" name="comentario_CEO" placeholder="Queremos te ouvir..."></textarea>
+      </section>
+    </fieldset>
 
     <input type="hidden" id="token" name="token">
     <button type="submit">Enviar</button>
@@ -193,3 +202,4 @@
   <script src="js/formulario.js"></script>
 </body>
 </html>
+
