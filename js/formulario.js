@@ -31,20 +31,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const depId = dep.replace(/\s+/g, "_").replace(/\//g, "_");
     const section = document.createElement("section");
     section.innerHTML = `
-      <h2 style="font-size: 1.4rem; color: #0077cc; margin-top: 2rem;">${dep}</h2>
+      <div style="margin-top: 2rem;">
+        <h2 style="font-size: 1.6rem; color: #0077cc; margin-bottom: 0.5rem;">${dep}</h2>
 
-      <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
-      <div class="nps-scale">
-        ${Array.from({ length: 11 }, (_, i) => `
-          <label>${i}<br>
-            <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
-          </label>
-        `).join("")}
+        <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
+        <div class="nps-scale">
+          ${Array.from({ length: 11 }, (_, i) => `
+            <label>${i}<br>
+              <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
+            </label>
+          `).join("")}
+        </div>
+
+        <label for="comentario_${depId}">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
+        <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Queremos te ouvir..."></textarea>
+        <hr>
       </div>
-
-      <label for="comentario_${depId}">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
-      <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Queremos te ouvir..."></textarea>
-      <hr>
     `;
     container.appendChild(section);
   });
@@ -79,4 +81,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 
