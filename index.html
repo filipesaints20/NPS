@@ -64,6 +64,7 @@
       text-align: center;
       font-weight: normal;
       font-size: 0.9rem;
+      position: relative;
     }
 
     input[type="radio"] {
@@ -76,9 +77,23 @@
       cursor: pointer;
       position: relative;
       margin-top: 5px;
+      display: inline-block;
+      vertical-align: middle;
     }
 
-    input[type="radio"]:checked {
+    input[type="radio"]::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: transparent;
+      transition: background-color 0.2s ease;
+    }
+
+    input[type="radio"]:checked::after {
       background-color: #00b7ff;
     }
 
@@ -98,7 +113,7 @@
       width: 100%;
       padding: 12px;
       border-radius: 8px;
-      background: #00b7ff;
+      background: #00ff9d;
       color: white;
       border: none;
       cursor: pointer;
@@ -177,7 +192,3 @@
   <script src="js/formulario.js"></script>
 </body>
 </html>
-
-
-
-
