@@ -85,7 +85,7 @@
     }
 
     button:hover {
-      background: #005fa3;
+      background: #03ffd5;
     }
 
     #status {
@@ -113,11 +113,11 @@
 <body>
   <form id="nps-form">
     <header>
-      <img src="assets/logo.png" alt="Logo Effico Saneamento" style="max-height:60px;">
+      <img src="logo.png" alt="Logo Effico Saneamento" style="max-height:60px;">
     </header>
 
     <h1>Pesquisa eNPS</h1>
-    <p style="text-align:center; font-size:0.9rem; color:#555;">*Nenhum dado pessoal será capturado*</p>
+    <p style="text-align:center; font-size:0.9rem; color:#555;">*Quando você enviar este formulário, ele não coletará automaticamente seus detalhes, como nome e endereço de email, a menos que você mesmo o forneça.*</p>
 
     <fieldset id="perguntas-container"></fieldset>
 
@@ -132,7 +132,7 @@
       "SGI", "COMERCIAL", "ENGENHARIA", "SST", "COMUNICAÇÃO", "OBRA", "SERVIÇOS"
     ];
 
-    const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // Substitua pela URL real
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPk06z0zx6R4Y7Piu19RsN2bWs4QZzTqh3NJxISsBQQGx5hJBjtVjxn_Bq1B3NzxYzJw/exec"; // Substitua pela URL real
 
     document.addEventListener("DOMContentLoaded", () => {
       const qs = new URLSearchParams(window.location.search);
@@ -167,8 +167,8 @@
               </label>
             `).join("")}
           </div>
-          <label for="comentario_${depId}">2. Comentário sobre ${dep}:</label>
-          <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Escreva aqui..."></textarea>
+          <label for="comentario_${depId}">2. Espaço para deixar elogios, sugestões e criticas</label>
+          <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Queremos te ouvir..."></textarea>
           <hr>
         `;
         container.appendChild(fieldset);
