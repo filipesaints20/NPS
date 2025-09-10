@@ -1,3 +1,4 @@
+// 🔐 Link do Google Apps Script codificado em Base64
 const encodedURL = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UGswNnowekY2UjRZN1BpdTE5UnNOMmJXczRRWnpUcWgzTkp4SVNzQlFRR3g1aEpCanRWanhuX0JxMUIzTnp4WXpKdw==";
 const WEB_APP_URL = atob(encodedURL);
 
@@ -45,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(section);
   });
 
+  // Seleção dos botões
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("nps-btn")) {
       const group = e.target.closest(".nps-scale");
@@ -63,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Envio do formulário
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusBox.textContent = "Enviando...";
