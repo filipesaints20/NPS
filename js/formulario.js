@@ -31,8 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const depId = dep.replace(/\s+/g, "_").replace(/\//g, "_");
     const section = document.createElement("section");
     section.innerHTML = `
-      <h2>${dep}</h2>
-      <label>Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
+      <h2 style="font-size: 1.4rem; color: #0077cc; margin-top: 2rem;">${dep}</h2>
+
+      <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
       <div class="nps-scale">
         ${Array.from({ length: 11 }, (_, i) => `
           <label>${i}<br>
@@ -40,7 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
           </label>
         `).join("")}
       </div>
-      <label for="comentario_${depId}">Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
+
+      <label for="comentario_${depId}">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
       <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Queremos te ouvir..."></textarea>
       <hr>
     `;
@@ -77,3 +79,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
