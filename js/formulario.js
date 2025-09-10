@@ -31,9 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const section = document.createElement("section");
     section.className = "departamento-section";
 
-    const escalaHTML = [...Array(11).keys()].map(i => `
-      <button type="button" class="nps-btn" data-value="${i}">${i}</button>
-    `).join("");
+    const escalaHTML = [...Array(11).keys()].map(i => {
+      let cor = "#ccc";
+      if (i <= 6) cor = "#ff4d4d";       // vermelho
+      else if (i <= 8) cor = "#ffcc00";  // amarelo
+      else cor = "#00cc66";              // verde
+
+      return `<button type="button" class="nps-btn" data-value="${i}" style="background-color:${cor}; border: none; color: #fff;">${i}</button>`;
+    }).join("");
 
     section.innerHTML = `
       <h2>${dep}</h2>
@@ -45,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(section);
   });
 
+  // Seleção de botão
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("nps-btn")) {
       const group = e.target.closest(".nps-scale");
@@ -63,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Envio do formulário
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusBox.textContent = "Enviando...";
