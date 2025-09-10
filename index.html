@@ -128,8 +128,8 @@
 
   <script>
     const DEPARTAMENTOS = [
-      "CEO/CFO", "ADM/FACILITIES", "PLANEJAMENTO", "RH", "FINANCEIRO",
-      "SGI", "COMERCIAL", "ENGENHARIA", "SST", "COMUNICAÇÃO", "OBRA", "SERVIÇOS"
+      "CEO","DIRETORIA FINANCEIRA","DIRETORIA DE OBRAS", "DIRETORIA DE SERVIÇOS", "FACILITIES","SUPRIMENTOS", "PLANEJAMENTO", "RH", "FINANCEIRO",
+      "DEPARTAMENTO DE QUALIDADE", "COMERCIAL", "ENGENHARIA", "SST", "COMUNICAÇÃO"
     ];
 
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPk06z0zx6R4Y7Piu19RsN2bWs4QZzTqh3NJxISsBQQGx5hJBjtVjxn_Bq1B3NzxYzJw/exec"; // Substitua pela URL real
@@ -153,7 +153,7 @@
       const container = document.getElementById("perguntas-container");
 
       // Exibe os outros 9 departamentos, excluindo o do token
-      const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep.toUpperCase() !== token.toUpperCase()).slice(0, 9);
+      const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep.toUpperCase() !== token.toUpperCase()).slice(0, 13);
 
       outrosDepartamentos.forEach(dep => {
         const depId = dep.replace(/\//g, "_").replace(/\s/g, "_");
