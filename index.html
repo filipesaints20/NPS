@@ -55,39 +55,34 @@
     .nps-scale {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 6px;
       margin: 1rem 0;
-      gap: 8px;
     }
 
-    .custom-radio {
-      position: relative;
-      padding-left: 28px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      user-select: none;
-    }
-
-    .custom-radio input[type="radio"] {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-    }
-
-    .custom-radio span {
-      position: absolute;
-      top: 2px;
-      left: 0;
-      height: 18px;
-      width: 18px;
-      background-color: #fff;
-      border: 2px solid #000;
+    .nps-btn {
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      transition: background-color 0.2s ease;
+      border: 2px solid #000;
+      background-color: #fff;
+      color: #000;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      line-height: 24px;
     }
 
-    .custom-radio input:checked ~ span {
+    .nps-btn:hover {
+      background-color: #e0f7f7;
+    }
+
+    .nps-btn.selected {
       background-color: #00ffd5;
+      color: #000;
+      box-shadow: 0 0 0 2px #00ffd5 inset;
     }
 
     textarea {
@@ -102,7 +97,7 @@
       margin-top: 0.5rem;
     }
 
-    button {
+    button[type="submit"] {
       width: 100%;
       padding: 12px;
       border-radius: 8px;
@@ -116,7 +111,7 @@
       transition: background 0.3s ease;
     }
 
-    button:hover {
+    button[type="submit"]:hover {
       background: #00ffd5;
     }
 
@@ -141,23 +136,18 @@
     }
 
     @media (max-width: 480px) {
-      form {
-        padding: 1rem;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      h2 {
-        font-size: 1.2rem;
-      }
-
       .nps-scale {
         justify-content: flex-start;
       }
 
-      button {
+      .nps-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+        line-height: 20px;
+      }
+
+      button[type="submit"] {
         font-size: 0.95rem;
       }
     }
@@ -178,15 +168,19 @@
       <section>
         <h2>CEO</h2>
         <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>CEO</strong>?</label>
-        <div class="nps-scale">
-          <!-- Exemplo de escala 0 a 10 -->
-          ${[...Array(11).keys()].map(i => `
-            <label class="custom-radio">
-              ${i}
-              <input type="radio" name="nps_CEO" value="${i}" ${i === 0 ? 'required' : ''}>
-              <span></span>
-            </label>
-          `).join('')}
+        <div class="nps-scale" data-dep="CEO">
+          <!-- Botões de 0 a 10 -->
+          <button type="button" class="nps-btn" data-value="0">0</button>
+          <button type="button" class="nps-btn" data-value="1">1</button>
+          <button type="button" class="nps-btn" data-value="2">2</button>
+          <button type="button" class="nps-btn" data-value="3">3</button>
+          <button type="button" class="nps-btn" data-value="4">4</button>
+          <button type="button" class="nps-btn" data-value="5">5</button>
+          <button type="button" class="nps-btn" data-value="6">6</button>
+          <button type="button" class="nps-btn" data-value="7">7</button>
+          <button type="button" class="nps-btn" data-value="8">8</button>
+          <button type="button" class="nps-btn" data-value="9">9</button>
+          <button type="button" class="nps-btn" data-value="10">10</button>
         </div>
 
         <label for="comentario_CEO">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>CEO</strong>:</label>
@@ -199,7 +193,25 @@
     <div id="status" aria-live="polite"></div>
   </form>
 
-  <script src="js/formulario.js"></script>
+  <script>
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("nps-btn")) {
+        const group = e.target.closest(".nps-scale");
+        group.querySelectorAll(".nps-btn").forEach(btn => btn.classList.remove("selected"));
+        e.target.classList.add("selected");
+
+        const name = "nps_" + group.dataset.dep;
+        let input = document.querySelector(`input[name="${name}"]`);
+        if (!input) {
+          input = document.createElement("input");
+          input.type = "hidden";
+          input.name = name;
+          group.appendChild(input);
+        }
+        input.value = e.target.dataset.value;
+      }
+    });
+  </script>
 </body>
 </html>
 
