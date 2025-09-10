@@ -67,35 +67,37 @@
       position: relative;
     }
 
-    input[type="radio"] {
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border: 2px solid #00b7ff;
-      border-radius: 100%;
-      background-color: #fff;
-      cursor: pointer;
-      position: relative;
-      margin-top: 10px;
-      display: inline-block;
-      vertical-align: middle;
-    }
+input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000; /* borda preta */
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  margin-top: 5px;
+  display: inline-block;
+  vertical-align: middle;
+}
 
-    input[type="radio"]::after {
-      content: "";
-      position: center;
-      top: 3px;
-      left: 3px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: transparent;
-      transition: background-color 0.2s ease;
-    }
+input[type="radio"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
 
-    input[type="radio"]:checked::after {
-      background-color: #00ffbf;
-    }
+input[type="radio"]:checked::after {
+  background-color: #00b7ff; /* azul Effico */
+}
+
 
     textarea {
       width: 100%;
