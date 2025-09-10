@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const section = document.createElement("section");
     section.innerHTML = `
       <div style="margin-top: 2rem;">
-        <h2 style="font-size: 1.6rem; color: #0077cc; margin-bottom: 0.5rem;">${dep}</h2>
+        <h2 style="font-size: 1.6rem; color: #000000ff; margin-bottom: 0.5rem;">${dep}</h2>
 
         <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
         <div class="nps-scale">
