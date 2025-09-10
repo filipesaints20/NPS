@@ -119,19 +119,7 @@
     <h1>Pesquisa eNPS</h1>
     <p style="text-align:center; font-size:0.9rem; color:#555;">*Nenhum dado pessoal será capturado*</p>
 
-    <fieldset>
-      <legend><label>1. Em uma escala de 0 a 10, você indicaria os serviços da Effico Saneamento?</label></legend>
-      <div class="nps-scale">
-        <script>
-          for (let i = 0; i <= 10; i++) {
-            document.write(`<label>${i}<br><input type="radio" name="nps" value="${i}" ${i === 0 ? 'required' : ''}></label>`);
-          }
-        </script>
-      </div>
-    </fieldset>
-
-    <label for="comentario">2. Espaço para deixar elogios, sugestões e críticas:</label>
-    <textarea id="comentario" name="comentario" placeholder="Escreva aqui..."></textarea>
+    <fieldset id="perguntas-container"></fieldset>
 
     <input type="hidden" id="token" name="token">
     <button type="submit">Enviar</button>
@@ -139,7 +127,12 @@
   </form>
 
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyiNc3kX-eLUrmFfAqMwCQ1aWL_6Lobe51JaWDfiL7t3V5GbWkqm0dxyg8hagY410a25Q/exec";
+    const DEPARTAMENTOS = [
+      "CEO/CFO", "ADM/FACILITIES", "PLANEJAMENTO", "RH", "FINANCEIRO",
+      "SGI", "COMERCIAL", "ENGENHARIA", "SST", "COMUNICAÇÃO", "OBRA", "SERVIÇOS"
+    ];
+
+    const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // Substitua pela URL real
 
     document.addEventListener("DOMContentLoaded", () => {
       const qs = new URLSearchParams(window.location.search);
@@ -149,7 +142,6 @@
       const form = document.getElementById("nps-form");
       const statusBox = document.getElementById("status");
 
-      // Verifica se já foi respondido neste navegador
       const preenchido = localStorage.getItem("nps_" + token);
       if (preenchido) {
         form.style.display = "none";
@@ -157,6 +149,30 @@
         statusBox.className = "success";
         return;
       }
+
+      const container = document.getElementById("perguntas-container");
+
+      // Exibe os outros 9 departamentos, excluindo o do token
+      const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep.toUpperCase() !== token.toUpperCase()).slice(0, 9);
+
+      outrosDepartamentos.forEach(dep => {
+        const depId = dep.replace(/\//g, "_").replace(/\s/g, "_");
+        const fieldset = document.createElement("fieldset");
+        fieldset.innerHTML = `
+          <legend><label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label></legend>
+          <div class="nps-scale">
+            ${Array.from({ length: 11 }, (_, i) => `
+              <label>${i}<br>
+                <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
+              </label>
+            `).join("")}
+          </div>
+          <label for="comentario_${depId}">2. Comentário sobre ${dep}:</label>
+          <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Escreva aqui..."></textarea>
+          <hr>
+        `;
+        container.appendChild(fieldset);
+      });
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -191,5 +207,6 @@
   </script>
 </body>
 </html>
+
 
 
