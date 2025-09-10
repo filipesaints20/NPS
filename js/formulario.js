@@ -31,28 +31,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const section = document.createElement("section");
     section.className = "departamento-section";
 
-    const escalaHTML = [...Array(11).keys()].map(i => {
-      let cor = "#ccc";
-      if (i <= 6) cor = "#ff4d4d";       // vermelho
-      else if (i <= 8) cor = "#ffcc00";  // amarelo
-      else cor = "#00cc66";              // verde
-
-      return `
-        <button type="button" class="nps-btn" data-value="${i}" style="
-          background-color: ${cor};
-          border: none;
-          color: #fff;
-          font-size: 0.85rem;
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 2px;
-        ">${i}</button>
-      `;
-    }).join("");
+    const escalaHTML = [...Array(11).keys()].map(i => `
+      <button type="button" class="nps-btn" data-value="${i}" style="
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid #000;
+        background-color: #fff;
+        color: #000;
+        font-size: 0.85rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 2px;
+        cursor: pointer;
+      ">${i}</button>
+    `).join("");
 
     section.innerHTML = `
       <h2>${dep}</h2>
@@ -67,8 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("nps-btn")) {
       const group = e.target.closest(".nps-scale");
-      group.querySelectorAll(".nps-btn").forEach(btn => btn.classList.remove("selected"));
-      e.target.classList.add("selected");
+      group.querySelectorAll(".nps-btn").forEach(btn => btn.style.backgroundColor = "#fff");
+      e.target.style.backgroundColor = "#00ffd5";
 
       const name = "nps_" + group.dataset.dep;
       let input = document.querySelector(`input[name="${name}"]`);
