@@ -19,7 +19,7 @@
       background: #fff;
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(1, 255, 255, 0.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       max-width: 720px;
       width: 100%;
     }
@@ -35,18 +35,21 @@
       font-size: 1.8rem;
       margin-bottom: 0.5rem;
       text-align: center;
+      color: #0077cc;
     }
 
     h2 {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       margin-top: 2rem;
-      color: #000000;
+      margin-bottom: 0.5rem;
+      color: #0077cc;
     }
 
     label {
       display: block;
-      margin-top: 1.2rem;
+      margin-top: 1rem;
       font-weight: 600;
+      color: #333;
     }
 
     .nps-scale {
@@ -67,8 +70,11 @@
       margin-top: 5px;
     }
 
-    textarea, button {
-      width: 90%;
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      box-sizing: border-box;
       padding: 12px;
       border-radius: 8px;
       border: 1px solid #ccc;
@@ -76,17 +82,17 @@
       margin-top: 0.5rem;
     }
 
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
     button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
       background: #00b7ff;
       color: white;
       border: none;
       cursor: pointer;
       font-weight: 600;
+      font-size: 1rem;
+      margin-top: 1.5rem;
       transition: background 0.3s ease;
     }
 
@@ -108,10 +114,32 @@
       color: red;
     }
 
+    section {
+      margin-top: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+
     @media (max-width: 480px) {
+      form {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
       .nps-scale label {
         flex: 1 0 18%;
         font-size: 0.8rem;
+      }
+
+      button {
+        font-size: 0.95rem;
       }
     }
   </style>

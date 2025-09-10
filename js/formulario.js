@@ -1,6 +1,6 @@
 // 🔐 Link do Google Apps Script codificado em Base64
 const encodedURL = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UGswNnowekY2UjRZN1BpdTE5UnNOMmJXczRRWnpUcWgzTkp4SVNzQlFRR3g1aEpCanRWanhuX0JxMUIzTnp4WXpKdw==";
-const WEB_APP_URL = atob(encodedURL); // 🔓 Decodifica para uso
+const WEB_APP_URL = atob(encodedURL);
 
 const DEPARTAMENTOS = [
   "CEO", "DIRETORIA FINANCEIRA", "DIRETORIA DE OBRAS", "DIRETORIA DE SERVIÇOS",
@@ -30,23 +30,30 @@ document.addEventListener("DOMContentLoaded", () => {
   outrosDepartamentos.forEach(dep => {
     const depId = dep.replace(/\s+/g, "_").replace(/\//g, "_");
     const section = document.createElement("section");
+    section.style.marginTop = "2rem";
+    section.style.paddingBottom = "1.5rem";
+    section.style.borderBottom = "1px solid #ccc";
+
     section.innerHTML = `
-      <div style="margin-top: 2rem;">
-        <h2 style="font-size: 1.6rem; color: #000000ff; margin-bottom: 0.5rem;">${dep}</h2>
+      <h2 style="font-size: 1.5rem; color: #0077cc; margin-bottom: 1rem;">${dep}</h2>
 
-        <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
-        <div class="nps-scale">
-          ${Array.from({ length: 11 }, (_, i) => `
-            <label>${i}<br>
-              <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
-            </label>
-          `).join("")}
-        </div>
-
-        <label for="comentario_${depId}">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
-        <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Queremos te ouvir..."></textarea>
-        <hr>
+      <label style="font-weight: 600;">1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
+      <div class="nps-scale" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: 1rem 0;">
+        ${Array.from({ length: 11 }, (_, i) => `
+          <label style="flex: 1 0 8%; text-align: center; font-size: 0.9rem;">
+            ${i}<br>
+            <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
+          </label>
+        `).join("")}
       </div>
+
+      <label for="comentario_${depId}" style="font-weight: 600;">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
+      <textarea
+        id="comentario_${depId}"
+        name="comentario_${depId}"
+        placeholder="Queremos te ouvir..."
+        style="width: 100%; min-height: 120px; resize: vertical; box-sizing: border-box; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; margin-top: 0.5rem;"
+      ></textarea>
     `;
     container.appendChild(section);
   });
@@ -81,5 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 
 
