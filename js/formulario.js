@@ -30,29 +30,27 @@ document.addEventListener("DOMContentLoaded", () => {
   outrosDepartamentos.forEach(dep => {
     const depId = dep.replace(/\s+/g, "_").replace(/\//g, "_");
     const section = document.createElement("section");
-    section.style.marginTop = "2rem";
-    section.style.paddingBottom = "1.5rem";
-    section.style.borderBottom = "1px solid #ccc";
+    section.className = "departamento-section";
+
+    const radios = Array.from({ length: 11 }, (_, i) => `
+      <label class="custom-radio">
+        ${i}
+        <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
+        <span></span>
+      </label>
+    `).join("");
 
     section.innerHTML = `
-      <h2 style="font-size: 1.5rem; color: #000000ff; margin-bottom: 1rem;">${dep}</h2>
+      <h2>${dep}</h2>
 
-      <label style="font-weight: 600;">1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
-      <div class="nps-scale" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: 1rem 0;">
-        ${Array.from({ length: 11 }, (_, i) => `
-          <label style="flex: 1 0 8%; text-align: center; font-size: 0.9rem;">
-            ${i}<br>
-            <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
-          </label>
-        `).join("")}
-      </div>
+      <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
+      <div class="nps-scale">${radios}</div>
 
-      <label for="comentario_${depId}" style="font-weight: 600;">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
+      <label for="comentario_${depId}">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
       <textarea
         id="comentario_${depId}"
         name="comentario_${depId}"
         placeholder="Queremos te ouvir..."
-        style="width: 100%; min-height: 120px; resize: vertical; box-sizing: border-box; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; margin-top: 0.5rem;"
       ></textarea>
     `;
     container.appendChild(section);
@@ -88,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 
 
 
