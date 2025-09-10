@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const container = document.getElementById("perguntas-container");
-  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token).slice(0, 13);
+  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token).slice(0, 14);
 
   outrosDepartamentos.forEach(dep => {
     const depId = dep.replace(/\s+/g, "_").replace(/\//g, "_");
