@@ -37,7 +37,21 @@ document.addEventListener("DOMContentLoaded", () => {
       else if (i <= 8) cor = "#ffcc00";  // amarelo
       else cor = "#00cc66";              // verde
 
-      return `<button type="button" class="nps-btn" data-value="${i}" style="background-color:${cor}; border: none; color: #fff;">${i}</button>`;
+      return `
+        <button type="button" class="nps-btn" data-value="${i}" style="
+          background-color: ${cor};
+          border: none;
+          color: #fff;
+          font-size: 0.9rem;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 2px;
+        ">✓</button>
+      `;
     }).join("");
 
     section.innerHTML = `
@@ -50,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(section);
   });
 
-  // Seleção de botão
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("nps-btn")) {
       const group = e.target.closest(".nps-scale");
@@ -69,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Envio do formulário
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusBox.textContent = "Enviando...";
