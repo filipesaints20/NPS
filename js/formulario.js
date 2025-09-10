@@ -42,15 +42,15 @@ document.addEventListener("DOMContentLoaded", () => {
           background-color: ${cor};
           border: none;
           color: #fff;
-          font-size: 0.9rem;
-          width: 28px;
-          height: 28px;
+          font-size: 0.85rem;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           margin: 2px;
-        ">✓</button>
+        ">${i}</button>
       `;
     }).join("");
 
