@@ -38,21 +38,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     section.innerHTML = `
       <h2>${dep}</h2>
-
       <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
       <div class="nps-scale" data-dep="${depId}">${escalaHTML}</div>
-
       <label for="comentario_${depId}">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
-      <textarea
-        id="comentario_${depId}"
-        name="comentario_${depId}"
-        placeholder="Queremos te ouvir..."
-      ></textarea>
+      <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Queremos te ouvir..."></textarea>
     `;
     container.appendChild(section);
   });
 
-  // ✅ Lógica para seleção de botão NPS
+  // 🎯 Lógica de seleção dos botões NPS
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("nps-btn")) {
       const group = e.target.closest(".nps-scale");
@@ -71,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ✅ Envio do formulário
+  // 📤 Envio do formulário
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusBox.textContent = "Enviando...";
@@ -102,7 +96,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-
-
-

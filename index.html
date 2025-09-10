@@ -5,153 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pesquisa NPS Effico Saneamento</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 2rem 1rem;
-      display: flex;
-      justify-content: center;
-    }
-
-    form {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      max-width: 720px;
-      width: 100%;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1rem;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-      text-align: center;
-      color: #000;
-    }
-
-    h2 {
-      font-size: 1.4rem;
-      margin-top: 2rem;
-      margin-bottom: 0.5rem;
-      color: #000;
-    }
-
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .nps-scale {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px;
-      margin: 1rem 0;
-    }
-
-    .nps-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 2px solid #000;
-      background-color: #fff;
-      color: #000;
-      font-size: 0.8rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: center;
-      line-height: 24px;
-    }
-
-    .nps-btn:hover {
-      background-color: #e0f7f7;
-    }
-
-    .nps-btn.selected {
-      background-color: #00ffd5;
-      color: #000;
-      box-shadow: 0 0 0 2px #00ffd5 inset;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 100px;
-      resize: vertical;
-      box-sizing: border-box;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      margin-top: 0.5rem;
-    }
-
-    button[type="submit"] {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      background: #23574e;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1rem;
-      margin-top: 1.5rem;
-      transition: background 0.3s ease;
-    }
-
-    button[type="submit"]:hover {
-      background: #00ffd5;
-    }
-
-    #status {
-      margin-top: 1rem;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    #status.success {
-      color: green;
-    }
-
-    #status.error {
-      color: red;
-    }
-
-    section {
-      margin-top: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid #ddd;
-    }
-
-    @media (max-width: 480px) {
-      .nps-scale {
-        justify-content: flex-start;
-      }
-
-      .nps-btn {
-        width: 24px;
-        height: 24px;
-        font-size: 0.7rem;
-        line-height: 20px;
-      }
-
-      button[type="submit"] {
-        font-size: 0.95rem;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <form id="nps-form">
@@ -164,54 +18,13 @@
       *Quando você enviar este formulário, ele não coletará automaticamente seus detalhes, como nome e endereço de email, a menos que você mesmo o forneça.*
     </p>
 
-    <fieldset id="perguntas-container">
-      <section>
-        <h2>CEO</h2>
-        <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>CEO</strong>?</label>
-        <div class="nps-scale" data-dep="CEO">
-          <!-- Botões de 0 a 10 -->
-          <button type="button" class="nps-btn" data-value="0">0</button>
-          <button type="button" class="nps-btn" data-value="1">1</button>
-          <button type="button" class="nps-btn" data-value="2">2</button>
-          <button type="button" class="nps-btn" data-value="3">3</button>
-          <button type="button" class="nps-btn" data-value="4">4</button>
-          <button type="button" class="nps-btn" data-value="5">5</button>
-          <button type="button" class="nps-btn" data-value="6">6</button>
-          <button type="button" class="nps-btn" data-value="7">7</button>
-          <button type="button" class="nps-btn" data-value="8">8</button>
-          <button type="button" class="nps-btn" data-value="9">9</button>
-          <button type="button" class="nps-btn" data-value="10">10</button>
-        </div>
-
-        <label for="comentario_CEO">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>CEO</strong>:</label>
-        <textarea id="comentario_CEO" name="comentario_CEO" placeholder="Queremos te ouvir..."></textarea>
-      </section>
-    </fieldset>
+    <fieldset id="perguntas-container"></fieldset>
 
     <input type="hidden" id="token" name="token">
     <button type="submit">Enviar</button>
     <div id="status" aria-live="polite"></div>
   </form>
 
-  <script>
-    document.addEventListener("click", (e) => {
-      if (e.target.classList.contains("nps-btn")) {
-        const group = e.target.closest(".nps-scale");
-        group.querySelectorAll(".nps-btn").forEach(btn => btn.classList.remove("selected"));
-        e.target.classList.add("selected");
-
-        const name = "nps_" + group.dataset.dep;
-        let input = document.querySelector(`input[name="${name}"]`);
-        if (!input) {
-          input = document.createElement("input");
-          input.type = "hidden";
-          input.name = name;
-          group.appendChild(input);
-        }
-        input.value = e.target.dataset.value;
-      }
-    });
-  </script>
+  <script src="formulario.js"></script>
 </body>
 </html>
-
