@@ -25,47 +25,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const container = document.getElementById("perguntas-container");
-  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token);
+  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token).slice(0, 14);
 
   outrosDepartamentos.forEach(dep => {
     const depId = dep.replace(/\s+/g, "_").replace(/\//g, "_");
     const section = document.createElement("section");
     section.className = "departamento-section";
 
-    const escalaHTML = [...Array(11).keys()].map(i => `
-      <button type="button" class="nps-btn" data-value="${i}">${i}</button>
+    const radios = Array.from({ length: 11 }, (_, i) => `
+      <label class="custom-radio">
+        ${i}
+        <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
+        <span></span>
+      </label>
     `).join("");
 
     section.innerHTML = `
       <h2>${dep}</h2>
+
       <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
-      <div class="nps-scale" data-dep="${depId}">${escalaHTML}</div>
+      <div class="nps-scale">${radios}</div>
+
       <label for="comentario_${depId}">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
-      <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Queremos te ouvir..."></textarea>
+      <textarea
+        id="comentario_${depId}"
+        name="comentario_${depId}"
+        placeholder="Queremos te ouvir..."
+      ></textarea>
     `;
     container.appendChild(section);
   });
 
-  // Seleção dos botões
-  document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("nps-btn")) {
-      const group = e.target.closest(".nps-scale");
-      group.querySelectorAll(".nps-btn").forEach(btn => btn.classList.remove("selected"));
-      e.target.classList.add("selected");
-
-      const name = "nps_" + group.dataset.dep;
-      let input = document.querySelector(`input[name="${name}"]`);
-      if (!input) {
-        input = document.createElement("input");
-        input.type = "hidden";
-        input.name = name;
-        group.appendChild(input);
-      }
-      input.value = e.target.dataset.value;
-    }
-  });
-
-  // Envio do formulário
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusBox.textContent = "Enviando...";
