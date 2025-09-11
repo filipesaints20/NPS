@@ -2,12 +2,6 @@
 const encodedURL = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UGswNnowekY2UjRZN1BpdTE5UnNOMmJXczRRWnpUcWgzTkp4SVNzQlFRR3g1aEpCanRWanhuX0JxMUIzTnp4WXpKdw==";
 const WEB_APP_URL = atob(encodedURL);
 
-const DEPARTAMENTOS = [
-  "CEO", "DIRETORIA FINANCEIRA", "DIRETORIA DE OBRAS", "DIRETORIA DE SERVIÇOS",
-  "FACILITIES", "SUPRIMENTOS", "PLANEJAMENTO", "RH", "FINANCEIRO",
-  "DEPARTAMENTO DE QUALIDADE", "COMERCIAL", "ENGENHARIA", "SST", "COMUNICAÇÃO"
-];
-
 document.addEventListener("DOMContentLoaded", () => {
   const qs = new URLSearchParams(window.location.search);
   const token = qs.get("token")?.trim().toUpperCase() || "";
@@ -25,34 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  const container = document.getElementById("perguntas-container");
-  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token).slice(0, 14);
-
-  // Cria seções dinâmicas para cada departamento
-  outrosDepartamentos.forEach(dep => {
-    const depId = dep.replace(/\s+/g, "_").replace(/\//g, "_");
-    const section = document.createElement("section");
-
-    const radios = Array.from({ length: 11 }, (_, i) => `
-      <label>
-        <input type="radio" name="nps_${depId}" value="${i}" required>
-        ${i}
-      </label>
-    `).join("");
-
-    section.innerHTML = `
-      <h2>${dep}</h2>
-
-      <label>1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
-      <div class="nps-scale">${radios}</div>
-
-      <label for="comentario_${depId}">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
-      <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Queremos te ouvir..."></textarea>
-    `;
-    container.appendChild(section);
-  });
-
-  // Evento de envio
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusBox.textContent = "Enviando...";
@@ -72,7 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
       if (data.ok) {
         localStorage.setItem("nps_" + token, "respondido");
-        window.location.href = "agradecimento.html";
+        form.style.display = "none";
+        statusBox.textContent = "Obrigado pelo seu feedback!";
+        statusBox.className = "success";
       } else {
         statusBox.textContent = "⚠️ Erro: " + (data.error || "Falha desconhecida");
         statusBox.className = "error";
