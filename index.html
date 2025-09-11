@@ -54,40 +54,35 @@
 
     .nps-scale {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       margin: 1rem 0;
+      gap: 8px;
     }
 
     .custom-radio {
-      display: inline-block;
-      gap: 20px;
-      position: relative;
-      padding-left: 28px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
       cursor: pointer;
       font-size: 0.9rem;
       user-select: none;
-      padding-left: 0;
+      text-align: center;
     }
 
     .custom-radio input[type="radio"] {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
+      display: none;
     }
 
-    .custom-radio span {
-      position: static;
-      top: 2px;
-      left: 0;
-      height: 8px;
-      width: 8px;
-      background-color: #fff;
+    .circle {
+      height: 16px;
+      width: 16px;
       border: 2px solid #000;
       border-radius: 50%;
+      background-color: #fff;
+      margin-bottom: 4px;
     }
 
-    .custom-radio input:checked ~ span {
+    .custom-radio input:checked + .circle {
       background-color: #00ffdd;
     }
 
@@ -155,8 +150,8 @@
       }
 
       .nps-scale {
-        justify-content: flex-start;
-        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
       }
 
       button {
@@ -176,7 +171,66 @@
       *Quando você enviar este formulário, ele não coletará automaticamente seus detalhes, como nome e endereço de email, a menos que você mesmo o forneça.*
     </p>
 
-    <fieldset id="perguntas-container"></fieldset>
+    <fieldset class="nps-scale">
+      <!-- Escala 0 a 10 -->
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="0">
+        <span class="circle"></span>
+        0
+      </label>
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="1">
+        <span class="circle"></span>
+        1
+      </label>
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="2">
+        <span class="circle"></span>
+        2
+      </label>
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="3">
+        <span class="circle"></span>
+        3
+      </label>
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="4">
+        <span class="circle"></span>
+        4
+      </label>
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="5">
+        <span class="circle"></span>
+        5
+      </label>
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="6">
+        <span class="circle"></span>
+        6
+      </label>
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="7">
+        <span class="circle"></span>
+        7
+      </label>
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="8">
+        <span class="circle"></span>
+        8
+      </label>
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="9">
+        <span class="circle"></span>
+        9
+      </label>
+      <label class="custom-radio">
+        <input type="radio" name="nps" value="10">
+        <span class="circle"></span>
+        10
+      </label>
+    </fieldset>
+
+    <textarea placeholder="Queremos te ouvir..."></textarea>
 
     <input type="hidden" id="token" name="token">
     <button type="submit">Enviar</button>

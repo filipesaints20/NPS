@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("nps-form");
   const statusBox = document.getElementById("status");
 
+  // Verifica se já respondeu
   const preenchido = localStorage.getItem("nps_" + token);
   if (preenchido) {
     form.style.display = "none";
@@ -24,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // Cria seções para os outros departamentos
   const container = document.getElementById("perguntas-container");
   const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token).slice(0, 14);
 
@@ -34,9 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const radios = Array.from({ length: 11 }, (_, i) => `
       <label class="custom-radio">
+        <input type="radio" name="nps_${depId}" value="${i}" required>
+        <span class="circle"></span>
         ${i}
-        <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
-        <span></span>
       </label>
     `).join("");
 
@@ -56,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(section);
   });
 
+  // Evento de envio
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusBox.textContent = "Enviando...";
