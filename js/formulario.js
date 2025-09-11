@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     section.innerHTML = `
       <h2 style="font-size: 1.5rem; color: #050505ff; margin-bottom: 1rem;">${dep}</h2>
 
-      <label style="font-weight: 600;">1. Em uma escala de 0 a 10, qual seu nível de satisfação com o departamento <strong>${dep}</strong>?</label>
+      <label style="font-weight: 600;">1. Em uma escala de 0 a 10, qual seu nível de satisfação com o <strong>${dep}</strong>?</label>
       <div class="nps-scale" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: 1rem 0;">
         ${Array.from({ length: 11 }, (_, i) => `
           <label style="flex: 1 0 8%; text-align: center; font-size: 0.9rem;">
