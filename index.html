@@ -69,9 +69,9 @@
 
     input[type="radio"] {
       appearance: none;
-      width: 18px;
-      height: 18px;
-      border: 2px solid #00b7ff;
+      width: 14px;             /* menor tamanho */
+      height: 14px;            /* menor tamanho */
+      border: 2px solid #000;  /* borda preta */
       border-radius: 50%;
       background-color: #fff;
       cursor: pointer;
@@ -86,15 +86,15 @@
       position: absolute;
       top: 3px;
       left: 3px;
-      width: 10px;
-      height: 10px;
+      width: 8px;              /* círculo interno menor */
+      height: 8px;
       border-radius: 50%;
       background-color: transparent;
       transition: background-color 0.2s ease;
     }
 
     input[type="radio"]:checked::after {
-      background-color: #00b7ff;
+      background-color: #000;  /* preenchido preto */
     }
 
     textarea {

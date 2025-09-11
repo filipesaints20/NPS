@@ -1,4 +1,4 @@
-// 🔐 Link do Google Apps Script codificado em Base64
+// Link do Google Apps Script codificado em Base64
 const encodedURL = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UGswNnowekY2UjRZN1BpdTE5UnNOMmJXczRRWnpUcWgzTkp4SVNzQlFRR3g1aEpCanRWanhuX0JxMUIzTnp4WXpKdw==";
 const WEB_APP_URL = atob(encodedURL);
 
@@ -25,19 +25,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Cria seções para os outros departamentos
   const container = document.getElementById("perguntas-container");
   const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token).slice(0, 14);
 
+  // Cria seções dinâmicas para cada departamento
   outrosDepartamentos.forEach(dep => {
     const depId = dep.replace(/\s+/g, "_").replace(/\//g, "_");
     const section = document.createElement("section");
-    section.className = "departamento-section";
 
     const radios = Array.from({ length: 11 }, (_, i) => `
-      <label class="custom-radio">
+      <label>
         <input type="radio" name="nps_${depId}" value="${i}" required>
-        <span class="circle"></span>
         ${i}
       </label>
     `).join("");
@@ -49,11 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="nps-scale">${radios}</div>
 
       <label for="comentario_${depId}">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
-      <textarea
-        id="comentario_${depId}"
-        name="comentario_${depId}"
-        placeholder="Queremos te ouvir..."
-      ></textarea>
+      <textarea id="comentario_${depId}" name="comentario_${depId}" placeholder="Queremos te ouvir..."></textarea>
     `;
     container.appendChild(section);
   });
