@@ -54,36 +54,47 @@
 
     .nps-scale {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       margin: 1rem 0;
-      gap: 8px;
     }
 
-    .custom-radio {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      cursor: pointer;
-      font-size: 0.9rem;
-      user-select: none;
+    .nps-scale label {
+      flex: 1 0 8%;
       text-align: center;
+      font-weight: normal;
+      font-size: 0.9rem;
+      position: relative;
     }
 
-    .custom-radio input[type="radio"] {
-      display: none;
-    }
-
-    .circle {
-      height: 16px;
-      width: 16px;
-      border: 2px solid #000;
+    input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #00b7ff;
       border-radius: 50%;
       background-color: #fff;
-      margin-bottom: 4px;
+      cursor: pointer;
+      position: relative;
+      margin-top: 5px;
+      display: inline-block;
+      vertical-align: middle;
     }
 
-    .custom-radio input:checked + .circle {
-      background-color: #00ffdd;
+    input[type="radio"]::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: transparent;
+      transition: background-color 0.2s ease;
+    }
+
+    input[type="radio"]:checked::after {
+      background-color: #00b7ff;
     }
 
     textarea {
@@ -123,7 +134,7 @@
     }
 
     #status.success {
-      color: rgb(0, 0, 0);
+      color: green;
     }
 
     #status.error {
@@ -149,9 +160,9 @@
         font-size: 1.2rem;
       }
 
-      .nps-scale {
-        flex-wrap: wrap;
-        justify-content: center;
+      .nps-scale label {
+        flex: 1 0 18%;
+        font-size: 0.8rem;
       }
 
       button {
@@ -171,66 +182,7 @@
       *Quando você enviar este formulário, ele não coletará automaticamente seus detalhes, como nome e endereço de email, a menos que você mesmo o forneça.*
     </p>
 
-    <fieldset class="nps-scale">
-      <!-- Escala 0 a 10 -->
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="0">
-        <span class="circle"></span>
-        0
-      </label>
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="1">
-        <span class="circle"></span>
-        1
-      </label>
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="2">
-        <span class="circle"></span>
-        2
-      </label>
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="3">
-        <span class="circle"></span>
-        3
-      </label>
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="4">
-        <span class="circle"></span>
-        4
-      </label>
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="5">
-        <span class="circle"></span>
-        5
-      </label>
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="6">
-        <span class="circle"></span>
-        6
-      </label>
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="7">
-        <span class="circle"></span>
-        7
-      </label>
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="8">
-        <span class="circle"></span>
-        8
-      </label>
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="9">
-        <span class="circle"></span>
-        9
-      </label>
-      <label class="custom-radio">
-        <input type="radio" name="nps" value="10">
-        <span class="circle"></span>
-        10
-      </label>
-    </fieldset>
-
-    <textarea placeholder="Queremos te ouvir..."></textarea>
+    <fieldset id="perguntas-container"></fieldset>
 
     <input type="hidden" id="token" name="token">
     <button type="submit">Enviar</button>
