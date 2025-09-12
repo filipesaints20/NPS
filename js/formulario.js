@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz5yPcA6UTJ9deziccyWsijbF77v8mLCHr3O21ie0YhjiXI7C0tz2csrPJL1urpW3CNTg/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz8cz6iinSF3yHOsoe81bqlyqys4puZGRuihC5JuJ82hQ2bVrHFBqD2oT6vDLBeIRzZog/exec";
 
 const DEPARTAMENTOS = [
   "CEO", "CFO", "ADM", "PLANEJAMENTO", "RH", "FINANCEIRO",
