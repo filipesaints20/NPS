@@ -1,89 +1,93 @@
-// 🔐 Link do Google Apps Script codificado em Base64
-const encodedURL = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UGswNnowekY2UjRZN1BpdTE5UnNOMmJXczRRWnpUcWgzTkp4SVNzQlFRR3g1aEpCanRWanhuX0JxMUIzTnp4WXpKdw==";
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPk06z0zx6R4Y7Piu19RsN2bWs4QZzTqh3NJxISsBQQGx5hJBjtVjxn_Bq1B3NzxYzJw/exec";
+const GROUPS = {
+  "CEO": "Ceo",
+  "CFO": "CFO (Diretor Financeiro)",
+  "ADM | SUPRIMENTOS | FACILITIES": "ADM | Suprimentos | Facilities",
+  "PLANEJAMENTO": "Planejamento",
+  "RH": "Recursos Humanos",
+  "FINANCEIRO": "Financeiro",
+  "DEPARTAMENTO DE QUALIDADE": "Departamento de Qualidade",
+  "ENGENHARIA": "Engenharia",
+  "SST": "Saúde e Segurança do Trabalho",
+  "COMUNICAÇÃO": "Comunicação"
+};
 
-const DEPARTAMENTOS = [
-  "CEO", "CFO - (DIRETORIA FINANCEIRA)","ADM | SUPRIMENTOS | FACILITIES", "PLANEJAMENTO", "RH", "FINANCEIRO",
-  "DEPARTAMENTO DE QUALIDADE", "ENGENHARIA", "SST", "COMUNICAÇÃO"
-];
+const SHEET_NAME = "Respostas";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const qs = new URLSearchParams(window.location.search);
-  const token = qs.get("token")?.trim().toUpperCase() || "";
-  document.getElementById("token").value = token;
-
-  const form = document.getElementById("nps-form");
-  const statusBox = document.getElementById("status");
-
-  const preenchido = localStorage.getItem("nps_" + token);
-  if (preenchido) {
-    form.style.display = "none";
-    statusBox.textContent = "Você já respondeu esta pesquisa. Obrigado!";
-    statusBox.className = "success";
-    return;
+function setup() {
+  const ss = SpreadsheetApp.getActive();
+  let sh = ss.getSheetByName(SHEET_NAME);
+  if (!sh) sh = ss.insertSheet(SHEET_NAME);
+  const headers = ["Timestamp", "Departamento", "Token", "NPS", "Comentário"];
+  const range = sh.getRange(1, 1, 1, headers.length);
+  const values = range.getValues()[0];
+  if (values.filter(String).length === 0) {
+    range.setValues([headers]);
   }
+}
 
-  const container = document.getElementById("perguntas-container");
-  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token).slice(0, 14);
+function doGet(e) {
+  return ContentService
+    .createTextOutput("OK: webapp rodando")
+    .setMimeType(ContentService.MimeType.TEXT);
+}
 
-  outrosDepartamentos.forEach(dep => {
-    const depId = dep.replace(/\s+/g, "_").replace(/\//g, "_");
-    const section = document.createElement("section");
-    section.style.marginTop = "2rem";
-    section.style.paddingBottom = "1.5rem";
-    section.style.borderBottom = "1px solid #ccc";
+function doPost(e) {
+  try {
+    const params = e.parameter || {};
+    const token = (params.token || "").trim().toUpperCase();
+    const ss = SpreadsheetApp.getActive();
+    const sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
 
-    section.innerHTML = `
-      <h2 style="font-size: 1.5rem; color: #050505ff; margin-bottom: 1rem;">${dep}</h2>
-
-      <label style="font-weight: 600;">1. Em uma escala de 0 a 10, qual seu nível de satisfação com o <strong>${dep}</strong>?</label>
-      <div class="nps-scale" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: 1rem 0;">
-        ${Array.from({ length: 11 }, (_, i) => `
-          <label style="flex: 1 0 8%; text-align: center; font-size: 0.9rem;">
-            ${i}<br>
-            <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
-          </label>
-        `).join("")}
-      </div>
-
-      <label for="comentario_${depId}" style="font-weight: 600;">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
-      <textarea
-        id="comentario_${depId}"
-        name="comentario_${depId}"
-        placeholder="Queremos te ouvir..."
-        style="width: 100%; min-height: 120px; resize: vertical; box-sizing: border-box; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; margin-top: 0.5rem;"
-      ></textarea>
-    `;
-    container.appendChild(section);
-  });
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    statusBox.textContent = "Enviando...";
-    statusBox.className = "";
-
-    const fd = new FormData(form);
-    const body = new URLSearchParams();
-    for (const [k, v] of fd.entries()) body.append(k, v);
-
-    try {
-      const res = await fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-        body: body.toString()
-      });
-
-      const data = await res.json();
-      if (data.ok) {
-        localStorage.setItem("nps_" + token, "respondido");
-        window.location.href = "agradecimento.html";
-      } else {
-        statusBox.textContent = "⚠️ Erro: " + (data.error || "Falha desconhecida");
-        statusBox.className = "error";
-      }
-    } catch (err) {
-      statusBox.textContent = "❌ Erro ao enviar: " + err.message;
-      statusBox.className = "error";
+    const deptOrigem = GROUPS[token];
+    if (!deptOrigem) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ ok: false, error: "Token inválido" }))
+        .setMimeType(ContentService.MimeType.JSON);
     }
-  });
-});
+
+    const dados = sh.getDataRange().getValues();
+    const jaRespondido = dados.some(row => row[2] === token);
+    if (jaRespondido) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ ok: false, error: "Este token já foi utilizado." }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const respostasRegistradas = [];
+    for (const key in params) {
+      if (key.startsWith("nps_")) {
+        const depKey = key.replace("nps_", "");
+        const comentarioKey = "comentario_" + depKey;
+        const nps = params[key].trim();
+        const comentario = (params[comentarioKey] || "").trim();
+        const nomeDepartamento = depKey.replace(/_/g, " ").toUpperCase();
+
+        if (nomeDepartamento === token) continue;
+
+        sh.appendRow([
+          new Date(),
+          nomeDepartamento,
+          token,
+          nps,
+          comentario
+        ]);
+
+        respostasRegistradas.push(nomeDepartamento);
+      }
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        ok: true,
+        message: "Respostas registradas com sucesso.",
+        departamentos: respostasRegistradas
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    const msg = (err && err.message) ? err.message : String(err);
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: msg }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
