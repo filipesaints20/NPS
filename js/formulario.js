@@ -35,11 +35,16 @@ function doPost(e) {
   try {
     const params = e.parameter || {};
     const token = (params.token || "").trim().toUpperCase();
+    Logger.log("Token recebido: " + token);
+
     const ss = SpreadsheetApp.getActive();
     const sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
 
     const deptOrigem = GROUPS[token];
+    Logger.log("Departamento de origem identificado: " + deptOrigem);
+
     if (!deptOrigem) {
+      Logger.log("Token inválido: " + token);
       return ContentService
         .createTextOutput(JSON.stringify({ ok: false, error: "Token inválido" }))
         .setMimeType(ContentService.MimeType.JSON);
@@ -47,6 +52,8 @@ function doPost(e) {
 
     const dados = sh.getDataRange().getValues();
     const jaRespondido = dados.some(row => row[2] === token);
+    Logger.log("Token já utilizado? " + jaRespondido);
+
     if (jaRespondido) {
       return ContentService
         .createTextOutput(JSON.stringify({ ok: false, error: "Este token já foi utilizado." }))
@@ -62,7 +69,13 @@ function doPost(e) {
         const comentario = (params[comentarioKey] || "").trim();
         const nomeDepartamento = depKey.replace(/_/g, " ").toUpperCase();
 
-        if (nomeDepartamento === token) continue;
+        Logger.log("Registrando resposta para: " + nomeDepartamento);
+        Logger.log("Nota: " + nps + " | Comentário: " + comentario);
+
+        if (nomeDepartamento === token) {
+          Logger.log("Ignorando departamento de origem: " + nomeDepartamento);
+          continue;
+        }
 
         sh.appendRow([
           new Date(),
@@ -76,6 +89,8 @@ function doPost(e) {
       }
     }
 
+    Logger.log("Departamentos registrados: " + respostasRegistradas.join(", "));
+
     return ContentService
       .createTextOutput(JSON.stringify({
         ok: true,
@@ -86,6 +101,7 @@ function doPost(e) {
 
   } catch (err) {
     const msg = (err && err.message) ? err.message : String(err);
+    Logger.log("Erro no doPost: " + msg);
     return ContentService
       .createTextOutput(JSON.stringify({ ok: false, error: msg }))
       .setMimeType(ContentService.MimeType.JSON);
