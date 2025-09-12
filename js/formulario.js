@@ -1,109 +1,105 @@
-const GROUPS = {
-  "CEO": "Ceo",
-  "CFO": "CFO (Diretor Financeiro)",
-  "ADM | SUPRIMENTOS | FACILITIES": "ADM | Suprimentos | Facilities",
-  "PLANEJAMENTO": "Planejamento",
-  "RH": "Recursos Humanos",
-  "FINANCEIRO": "Financeiro",
-  "DEPARTAMENTO DE QUALIDADE": "Departamento de Qualidade",
-  "ENGENHARIA": "Engenharia",
-  "SST": "Saúde e Segurança do Trabalho",
-  "COMUNICAÇÃO": "Comunicação"
-};
+// 🔐 Link do Google Apps Script codificado em Base64
+const encodedURL = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UGswNnowekY2UjRZN1BpdTE5UnNOMmJXczRRWnpUcWgzTkp4SVNzQlFRR3g1aEpCanRWanhuX0JxMUIzTnp4WXpKdw==";
+const WEB_APP_URL = atob(encodedURL);
 
-const SHEET_NAME = "Respostas";
+const DEPARTAMENTOS = [
+  "CEO", "CFO", "ADM | SUPRIMENTOS | FACILITIES", "PLANEJAMENTO", "RH", "FINANCEIRO",
+  "DEPARTAMENTO DE QUALIDADE", "ENGENHARIA", "SST", "COMUNICAÇÃO"
+];
 
-function setup() {
-  const ss = SpreadsheetApp.getActive();
-  let sh = ss.getSheetByName(SHEET_NAME);
-  if (!sh) sh = ss.insertSheet(SHEET_NAME);
-  const headers = ["Timestamp", "Departamento", "Token", "NPS", "Comentário"];
-  const range = sh.getRange(1, 1, 1, headers.length);
-  const values = range.getValues()[0];
-  if (values.filter(String).length === 0) {
-    range.setValues([headers]);
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Script carregado com sucesso");
+
+  const qs = new URLSearchParams(window.location.search);
+  const token = qs.get("token")?.trim().toUpperCase() || "";
+  console.log("Token recebido:", token);
+
+  const form = document.getElementById("nps-form");
+  const statusBox = document.getElementById("status");
+
+  if (!DEPARTAMENTOS.includes(token)) {
+    statusBox.textContent = "⚠️ Token inválido ou ausente. Verifique o link.";
+    statusBox.className = "error";
+    form.style.display = "none";
+    return;
   }
-}
 
-function doGet(e) {
-  return ContentService
-    .createTextOutput("OK: webapp rodando")
-    .setMimeType(ContentService.MimeType.TEXT);
-}
+  document.getElementById("token").value = token;
 
-function doPost(e) {
-  try {
-    const params = e.parameter || {};
-    const token = (params.token || "").trim().toUpperCase();
-    Logger.log("Token recebido: " + token);
+  const preenchido = localStorage.getItem("nps_" + token);
+  if (preenchido) {
+    form.style.display = "none";
+    statusBox.textContent = "Você já respondeu esta pesquisa. Obrigado!";
+    statusBox.className = "success";
+    return;
+  }
 
-    const ss = SpreadsheetApp.getActive();
-    const sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+  const container = document.getElementById("perguntas-container");
+  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token);
+  console.log("Departamentos a avaliar:", outrosDepartamentos);
 
-    const deptOrigem = GROUPS[token];
-    Logger.log("Departamento de origem identificado: " + deptOrigem);
+  outrosDepartamentos.forEach(dep => {
+    const depId = dep.replace(/\s+/g, "_").replace(/\|/g, "_").replace(/\//g, "_");
+    const section = document.createElement("section");
 
-    if (!deptOrigem) {
-      Logger.log("Token inválido: " + token);
-      return ContentService
-        .createTextOutput(JSON.stringify({ ok: false, error: "Token inválido" }))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
+    section.innerHTML = `
+      <h2 style="font-size: 1.5rem; color: #050505ff; margin-bottom: 1rem;">${dep}</h2>
 
-    const dados = sh.getDataRange().getValues();
-    const jaRespondido = dados.some(row => row[2] === token);
-    Logger.log("Token já utilizado? " + jaRespondido);
+      <label style="font-weight: 600;">1. Em uma escala de 0 a 10, qual seu nível de satisfação com o <strong>${dep}</strong>?</label>
+      <div class="nps-scale" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: 1rem 0;">
+        ${Array.from({ length: 11 }, (_, i) => `
+          <label style="flex: 1 0 8%; text-align: center; font-size: 0.9rem;">
+            ${i}<br>
+            <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
+          </label>
+        `).join("")}
+      </div>
 
-    if (jaRespondido) {
-      return ContentService
-        .createTextOutput(JSON.stringify({ ok: false, error: "Este token já foi utilizado." }))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
+      <label for="comentario_${depId}" style="font-weight: 600;">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
+      <textarea
+        id="comentario_${depId}"
+        name="comentario_${depId}"
+        placeholder="Queremos te ouvir..."
+        style="width: 100%; min-height: 120px; resize: vertical; box-sizing: border-box; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; margin-top: 0.5rem;"
+      ></textarea>
+    `;
+    container.appendChild(section);
+  });
 
-    const respostasRegistradas = [];
-    for (const key in params) {
-      if (key.startsWith("nps_")) {
-        const depKey = key.replace("nps_", "");
-        const comentarioKey = "comentario_" + depKey;
-        const nps = params[key].trim();
-        const comentario = (params[comentarioKey] || "").trim();
-        const nomeDepartamento = depKey.replace(/_/g, " ").toUpperCase();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    statusBox.textContent = "Enviando...";
+    statusBox.className = "";
 
-        Logger.log("Registrando resposta para: " + nomeDepartamento);
-        Logger.log("Nota: " + nps + " | Comentário: " + comentario);
+    const fd = new FormData(form);
+    const body = new URLSearchParams();
+    for (const [k, v] of fd.entries()) body.append(k, v);
 
-        if (nomeDepartamento === token) {
-          Logger.log("Ignorando departamento de origem: " + nomeDepartamento);
-          continue;
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body: body.toString()
+      });
+
+      const data = await res.json();
+      console.log("Resposta do servidor:", data);
+
+      if (data.ok) {
+        localStorage.setItem("nps_" + token, "respondido");
+        window.location.href = "agradecimento.html";
+      } else {
+        statusBox.textContent = "⚠️ Erro: " + (data.error || "Falha desconhecida");
+        statusBox.className = "error";
+
+        if (data.error === "Este token já foi utilizado.") {
+          form.style.display = "none";
         }
-
-        sh.appendRow([
-          new Date(),
-          nomeDepartamento,
-          token,
-          nps,
-          comentario
-        ]);
-
-        respostasRegistradas.push(nomeDepartamento);
       }
+    } catch (err) {
+      console.error("Erro ao enviar:", err);
+      statusBox.textContent = "❌ Erro ao enviar: " + err.message;
+      statusBox.className = "error";
     }
-
-    Logger.log("Departamentos registrados: " + respostasRegistradas.join(", "));
-
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        ok: true,
-        message: "Respostas registradas com sucesso.",
-        departamentos: respostasRegistradas
-      }))
-      .setMimeType(ContentService.MimeType.JSON);
-
-  } catch (err) {
-    const msg = (err && err.message) ? err.message : String(err);
-    Logger.log("Erro no doPost: " + msg);
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: false, error: msg }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
+  });
+});
