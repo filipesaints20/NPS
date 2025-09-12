@@ -1,6 +1,6 @@
 // 🔐 Link do Google Apps Script codificado em Base64
 const encodedURL = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UGswNnowekY2UjRZN1BpdTE5UnNOMmJXczRRWnpUcWgzTkp4SVNzQlFRR3g1aEpCanRWanhuX0JxMUIzTnp4WXpKdw==";
-const WEB_APP_URL = atob(encodedURL);
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPk06z0zx6R4Y7Piu19RsN2bWs4QZzTqh3NJxISsBQQGx5hJBjtVjxn_Bq1B3NzxYzJw/exec"
 
 const DEPARTAMENTOS = [
   "CEO", "CFO", "ADM/SUPRIMENTOS/FACILITIES", "PLANEJAMENTO", "RH", "FINANCEIRO",
