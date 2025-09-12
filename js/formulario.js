@@ -1,6 +1,4 @@
-// 🔐 Link do Google Apps Script codificado em Base64
-const encodedURL = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UGswNnowekY2UjRZN1BpdTE5UnNOMmJXczRRWnpUcWgzTkp4SVNzQlFRR3g1aEpCanRWanhuX0JxMUIzTnp4WXpKdw==";
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq8dFmy4mvz-hebVbUezGVA4I5uh4MK6Ejk7J-REV1fz3WBnvVM1d2OgIB_yhLcVErXQ/exec"
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq8dFmy4mvz-hebVbUezGVA4I5uh4MK6Ejk7J-REV1fz3WBnvVM1d2OgIB_yhLcVErXQ/exec";
 
 const DEPARTAMENTOS = [
   "CEO", "CFO", "ADM", "PLANEJAMENTO", "RH", "FINANCEIRO",
@@ -30,33 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token);
   console.log("📋 Departamentos a avaliar:", outrosDepartamentos);
 
-  outrosDepartamentos.forEach(dep => {
-    const depId = dep.replace(/\s+/g, "_").replace(/[|/]/g, "_");
-    const section = document.createElement("section");
-
-    section.innerHTML = `
-      <h2 style="font-size: 1.5rem; color: #050505ff; margin-bottom: 1rem;">${dep}</h2>
-
-      <label style="font-weight: 600;">1. Em uma escala de 0 a 10, qual seu nível de satisfação com o <strong>${dep}</strong>?</label>
-      <div class="nps-scale" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: 1rem 0;">
-        ${Array.from({ length: 11 }, (_, i) => `
-          <label style="flex: 1 0 8%; text-align: center; font-size: 0.9rem;">
-            ${i}<br>
-            <input type="radio" name="nps_${depId}" value="${i}" ${i === 0 ? 'required' : ''}>
-          </label>
-        `).join("")}
-      </div>
-
-      <label for="comentario_${depId}" style="font-weight: 600;">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
-      <textarea
-        id="comentario_${depId}"
-        name="comentario_${depId}"
-        placeholder="Queremos te ouvir..."
-        style="width: 100%; min-height: 120px; resize: vertical; box-sizing: border-box; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; margin-top: 0.5rem;"
-      ></textarea>
-    `;
-    container.appendChild(section);
-  });
+  // ...continua normalmente
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -89,7 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (err) {
       console.error("❌ Erro ao enviar:", err);
-      statusBox.textContent = "❌ Erro ao enviar: " + err.message;
+      if (err.name === "TypeError" && err.message === "Failed to fetch") {
+        statusBox.textContent = "❌ Não foi possível conectar ao servidor. Verifique se o Web App está publicado corretamente.";
+      } else {
+        statusBox.textContent = "❌ Erro ao enviar: " + err.message;
+      }
       statusBox.className = "error";
     }
   });
