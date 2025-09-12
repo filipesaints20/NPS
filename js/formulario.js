@@ -2,7 +2,7 @@ const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyq8dFmy4mvz-hebVbU
 
 const DEPARTAMENTOS = [
   "CEO", "CFO", "ADM", "PLANEJAMENTO", "RH", "FINANCEIRO",
-  "ENGENHARIA", "SST", "COMUNICAÇÃO", "SGI", "PLANEJAMENTOS"
+  "ENGENHARIA", "SST", "COMUNICAÇÃO", "SGI"
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
