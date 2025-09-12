@@ -3,8 +3,8 @@ const encodedURL = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UGsw
 const WEB_APP_URL = atob(encodedURL);
 
 const DEPARTAMENTOS = [
-  "CEO", "CFO", "ADM | SUPRIMENTOS | FACILITIES", "PLANEJAMENTO", "RH", "FINANCEIRO",
-  "DEPARTAMENTO DE QUALIDADE", "ENGENHARIA", "SST", "COMUNICAÇÃO"
+  "CEO", "CFO", "ADM/SUPRIMENTOS/FACILITIES", "PLANEJAMENTO", "RH", "FINANCEIRO",
+  "DEPARTAMENTO DE QUALIDADE", "ENGENHARIA", "SST", "COMUNICAÇÃO", "SGI", "PLANEJAMENTOS"
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("📋 Departamentos a avaliar:", outrosDepartamentos);
 
   outrosDepartamentos.forEach(dep => {
-    const depId = dep.replace(/\s+/g, "_").replace(/\|/g, "_").replace(/\//g, "_");
+    const depId = dep.replace(/\s+/g, "_").replace(/[|/]/g, "_");
     const section = document.createElement("section");
 
     section.innerHTML = `
