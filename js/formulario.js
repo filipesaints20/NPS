@@ -8,11 +8,11 @@ const DEPARTAMENTOS = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Script carregado com sucesso");
+  console.log("✅ Script carregado");
 
   const qs = new URLSearchParams(window.location.search);
   const token = qs.get("token")?.trim().toUpperCase() || "";
-  console.log("Token recebido:", token);
+  console.log("🔑 Token recebido:", token);
 
   const form = document.getElementById("nps-form");
   const statusBox = document.getElementById("status");
@@ -26,17 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("token").value = token;
 
-  const preenchido = localStorage.getItem("nps_" + token);
-  if (preenchido) {
-    form.style.display = "none";
-    statusBox.textContent = "Você já respondeu esta pesquisa. Obrigado!";
-    statusBox.className = "success";
-    return;
-  }
-
   const container = document.getElementById("perguntas-container");
   const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token);
-  console.log("Departamentos a avaliar:", outrosDepartamentos);
+  console.log("📋 Departamentos a avaliar:", outrosDepartamentos);
 
   outrosDepartamentos.forEach(dep => {
     const depId = dep.replace(/\s+/g, "_").replace(/\|/g, "_").replace(/\//g, "_");
@@ -83,10 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const data = await res.json();
-      console.log("Resposta do servidor:", data);
+      console.log("📨 Resposta do servidor:", data);
 
       if (data.ok) {
-        localStorage.setItem("nps_" + token, "respondido");
         window.location.href = "agradecimento.html";
       } else {
         statusBox.textContent = "⚠️ Erro: " + (data.error || "Falha desconhecida");
@@ -97,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     } catch (err) {
-      console.error("Erro ao enviar:", err);
+      console.error("❌ Erro ao enviar:", err);
       statusBox.textContent = "❌ Erro ao enviar: " + err.message;
       statusBox.className = "error";
     }
