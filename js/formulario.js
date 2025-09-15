@@ -15,19 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("nps-form");
   const statusBox = document.getElementById("status");
 
-  if (!DEPARTAMENTOS.includes(token)) {
-    statusBox.textContent = "⚠️ Token inválido ou ausente. Verifique o link.";
-    statusBox.className = "error";
-    form.style.display = "none";
-    return;
-  }
-
+  // 🔹 Preenche o hidden input com o token (se existir)
   document.getElementById("token").value = token;
 
   const container = document.getElementById("perguntas-container");
   const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token);
   console.log("📋 Departamentos a avaliar:", outrosDepartamentos);
 
+  // 🔹 Gera perguntas dinamicamente
   outrosDepartamentos.forEach(dep => {
     const depId = dep.replace(/\s+/g, "_").replace(/[|/]/g, "_");
     const section = document.createElement("section");
@@ -56,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(section);
   });
 
+  // 🔹 Submissão do formulário
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusBox.textContent = "Enviando...";
@@ -76,24 +72,18 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("📨 Resposta do servidor:", data);
 
       if (data.ok) {
+        // 🔹 Sempre redireciona após sucesso
         window.location.href = "agradecimento.html";
       } else {
         statusBox.textContent = "⚠️ Erro: " + (data.error || "Falha desconhecida");
         statusBox.className = "error";
-
-        if (data.error === "Este token já foi utilizado.") {
-          form.style.display = "none";
-        }
       }
     } catch (err) {
       console.error("❌ Erro ao enviar:", err);
-      if (err.name === "TypeError" && err.message === "Failed to fetch") {
-        statusBox.textContent = "❌ Não foi possível conectar ao servidor. Verifique se o Web App está publicado corretamente.";
-      } else {
-        statusBox.textContent = "❌ Erro ao enviar: " + err.message;
-      }
+      statusBox.textContent = "❌ Erro ao enviar: " + err.message;
       statusBox.className = "error";
     }
   });
 });
+
 
