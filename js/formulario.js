@@ -19,11 +19,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("token").value = token;
 
   const container = document.getElementById("perguntas-container");
-  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token);
-  console.log("📋 Departamentos a avaliar:", outrosDepartamentos);
+
+  // 🔹 Filtra apenas o departamento correspondente ao token
+  const departamentosFiltrados = DEPARTAMENTOS.filter(dep => dep.toUpperCase() === token);
+  console.log("📋 Departamento a avaliar:", departamentosFiltrados);
 
   // 🔹 Gera perguntas dinamicamente
-  outrosDepartamentos.forEach(dep => {
+  departamentosFiltrados.forEach(dep => {
     const depId = dep.replace(/\s+/g, "_").replace(/[|/]/g, "_");
     const section = document.createElement("section");
 
