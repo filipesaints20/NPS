@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxw67A2SrsjC9KHaP2LRqZpXH2yeuh7DUMySnqVXhA1vcDAZbsmOiOcFrPlAFVzsnvHNQ/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxZLG8i9pru3GXklfH9YqLomJPn4ro1d9Se32vuZB6etwo2memksSy8U_21BCcWjPiQaw/exec;"
 
 // 🔹 Mapeamento de tokens simples para nomes completos
 const TOKEN_MAP = {
@@ -25,7 +25,6 @@ const DEPARTAMENTOS_AVALIAVEIS = [
   "PLANEJAMENTO",
   "RH",
   "FINANCEIRO",
-  "ENGENHARIA",
   "SST",
   "COMUNICAÇÃO",
   "SGI"
