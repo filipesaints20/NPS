@@ -11,10 +11,25 @@ const TOKEN_MAP = {
   "ENGENHARIA": "ENGENHARIA",
   "SST": "SST",
   "COMUNICACAO": "COMUNICAÇÃO",
-  "SGI": "SGI"
+  "SGI": "SGI",
+  "COMERCIAL": "COMERCIAL",
+  "GERENTESDECONTRATOS": "GERENTES DE CONTRATOS",
+  "DIRETORIA": "DIRETORIA"
 };
 
-const DEPARTAMENTOS = Object.values(TOKEN_MAP);
+// 🔹 Departamentos que devem ser avaliados
+const DEPARTAMENTOS_AVALIAVEIS = [
+  "CEO",
+  "CFO Diretoria Financeira",
+  "ADM FACILITIES SUPRIMENTOS",
+  "PLANEJAMENTO",
+  "RH",
+  "FINANCEIRO",
+  "ENGENHARIA",
+  "SST",
+  "COMUNICAÇÃO",
+  "SGI"
+];
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("✅ Script carregado");
@@ -37,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("token").value = token;
 
   // Filtra departamentos para avaliação (exclui o próprio)
-  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== nomeDepartamentoUsuario);
+  const outrosDepartamentos = DEPARTAMENTOS_AVALIAVEIS.filter(dep => dep !== nomeDepartamentoUsuario);
   console.log("📋 Departamentos a avaliar:", outrosDepartamentos);
 
   // Gera perguntas dinamicamente
