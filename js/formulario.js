@@ -1,8 +1,16 @@
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYuHJedmfi30fM2sSo9mNmJiln9Jp13zfxP-Q3gGggr8Usa5-2zrcNTLPahbmCQYl7yg/exec";
 
 const DEPARTAMENTOS = [
-  "CEO", "CFO (Diretoria Financeira)", "ADM|FACILITIES|SUPRIMENTOS", "PLANEJAMENTO", "RH", "FINANCEIRO",
-  "ENGENHARIA", "SST", "COMUNICAÇÃO", "SGI"
+  "CEO",
+  "CFO (Diretoria Financeira)",
+  "ADM|FACILITIES|SUPRIMENTOS",
+  "PLANEJAMENTO",
+  "RH",
+  "FINANCEIRO",
+  "ENGENHARIA",
+  "SST",
+  "COMUNICAÇÃO",
+  "SGI"
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -14,25 +22,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.getElementById("nps-form");
   const statusBox = document.getElementById("status");
-
-  // 🔹 Preenche o hidden input com o token (se existir)
-  document.getElementById("token").value = token;
-
   const container = document.getElementById("perguntas-container");
 
-  // 🔹 Filtra apenas o departamento correspondente ao token
-  const departamentosFiltrados = DEPARTAMENTOS.filter(dep => dep.toUpperCase() === token);
-  console.log("📋 Departamento a avaliar:", departamentosFiltrados);
+  // Preenche o campo oculto com o token
+  document.getElementById("token").value = token;
 
-  // 🔹 Gera perguntas dinamicamente
-  departamentosFiltrados.forEach(dep => {
+  // Filtra departamentos para avaliação (exclui o próprio)
+  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token);
+  console.log("📋 Departamentos a avaliar:", outrosDepartamentos);
+
+  // Gera perguntas dinamicamente
+  outrosDepartamentos.forEach(dep => {
     const depId = dep.replace(/\s+/g, "_").replace(/[|/]/g, "_");
-    const section = document.createElement("section");
 
+    const section = document.createElement("section");
     section.innerHTML = `
       <h2 style="font-size: 1.5rem; color: #050505ff; margin-bottom: 1rem;">${dep}</h2>
 
-      <label style="font-weight: 600;">1. Em uma escala de 0 a 10, qual seu nível de satisfação com o <strong>${dep}</strong>?</label>
+      <label style="font-weight: 600;">
+        1. Em uma escala de 0 a 10, qual seu nível de satisfação com o <strong>${dep}</strong>?
+      </label>
       <div class="nps-scale" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: 1rem 0;">
         ${Array.from({ length: 11 }, (_, i) => `
           <label style="flex: 1 0 8%; text-align: center; font-size: 0.9rem;">
@@ -42,7 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
         `).join("")}
       </div>
 
-      <label for="comentario_${depId}" style="font-weight: 600;">2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:</label>
+      <label for="comentario_${depId}" style="font-weight: 600;">
+        2. Espaço para deixar elogios, sugestões e críticas sobre <strong>${dep}</strong>:
+      </label>
       <textarea
         id="comentario_${depId}"
         name="comentario_${depId}"
@@ -53,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(section);
   });
 
-  // 🔹 Submissão do formulário
+  // Submissão do formulário
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusBox.textContent = "Enviando...";
@@ -61,12 +72,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fd = new FormData(form);
     const body = new URLSearchParams();
-    for (const [k, v] of fd.entries()) body.append(k, v);
+    for (const [k, v] of fd.entries()) {
+      body.append(k, v);
+    }
 
     try {
       const res = await fetch(WEB_APP_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        },
         body: body.toString()
       });
 
@@ -74,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("📨 Resposta do servidor:", data);
 
       if (data.ok) {
-        // 🔹 Sempre redireciona após sucesso
         window.location.href = "agradecimento.html";
       } else {
         statusBox.textContent = "⚠️ Erro: " + (data.error || "Falha desconhecida");
