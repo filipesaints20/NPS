@@ -1,24 +1,33 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyy2KJSYo6RKVOvUcLYeJ5AH5dM_n1lhd49u_za09agw2rLOWkdXMcj6LqpbVKO95dMLg/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxw67A2SrsjC9KHaP2LRqZpXH2yeuh7DUMySnqVXhA1vcDAZbsmOiOcFrPlAFVzsnvHNQ/exec";
 
-const DEPARTAMENTOS = [
-  "CEO",
-  "CFO Diretoria Financeira",
-  "ADM FACILITIES SUPRIMENTOS",
-  "PLANEJAMENTO",
-  "RH",
-  "FINANCEIRO",
-  "ENGENHARIA",
-  "SST",
-  "COMUNICAÇÃO",
-  "SGI"
-];
+// 🔹 Mapeamento de tokens simples para nomes completos
+const TOKEN_MAP = {
+  "CEO": "CEO",
+  "CFO": "CFO Diretoria Financeira",
+  "ADM": "ADM FACILITIES SUPRIMENTOS",
+  "PLANEJAMENTO": "PLANEJAMENTO",
+  "RH": "RH",
+  "FINANCEIRO": "FINANCEIRO",
+  "ENGENHARIA": "ENGENHARIA",
+  "SST": "SST",
+  "COMUNICACAO": "COMUNICAÇÃO",
+  "SGI": "SGI"
+};
+
+const DEPARTAMENTOS = Object.values(TOKEN_MAP);
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("✅ Script carregado");
 
   const qs = new URLSearchParams(window.location.search);
-  const token = qs.get("token")?.trim().toUpperCase() || "";
+  const token = qs.get("token")?.trim().toUpperCase().replace(/[()|]/g, "").replace(/\s+/g, "") || "";
   console.log("🔑 Token recebido:", token);
+
+  const nomeDepartamentoUsuario = TOKEN_MAP[token];
+  if (!nomeDepartamentoUsuario) {
+    alert("Token inválido. Verifique o link de acesso.");
+    return;
+  }
 
   const form = document.getElementById("nps-form");
   const statusBox = document.getElementById("status");
@@ -28,12 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("token").value = token;
 
   // Filtra departamentos para avaliação (exclui o próprio)
-  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== token);
+  const outrosDepartamentos = DEPARTAMENTOS.filter(dep => dep !== nomeDepartamentoUsuario);
   console.log("📋 Departamentos a avaliar:", outrosDepartamentos);
 
   // Gera perguntas dinamicamente
   outrosDepartamentos.forEach(dep => {
-    const depId = dep.replace(/\s+/g, "_").replace(/[|/]/g, "_");
+    const depId = dep.replace(/\s+/g, "_").replace(/[|/]/g, "_").toUpperCase();
 
     const section = document.createElement("section");
     section.innerHTML = `
