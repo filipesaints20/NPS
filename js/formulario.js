@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyk_-axoFMpXS4ubuckpSpR8tbiA1zQXG5cqXsrykSQRBuwWQAJl9ldaGjNlj7TGY7c8A/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyy2KJSYo6RKVOvUcLYeJ5AH5dM_n1lhd49u_za09agw2rLOWkdXMcj6LqpbVKO95dMLg/exec";
 
 const DEPARTAMENTOS = [
   "CEO",
