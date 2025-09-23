@@ -2,8 +2,8 @@ const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYuHJedmfi30fM2sSo
 
 const DEPARTAMENTOS = [
   "CEO",
-  "CFO (Diretoria Financeira)",
-  "ADM|FACILITIES|SUPRIMENTOS",
+  "CFO Diretoria Financeira",
+  "ADM FACILITIES SUPRIMENTOS",
   "PLANEJAMENTO",
   "RH",
   "FINANCEIRO",
