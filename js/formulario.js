@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxZLG8i9pru3GXklfH9YqLomJPn4ro1d9Se32vuZB6etwo2memksSy8U_21BCcWjPiQaw/exec;"
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyKocu1yHm2sE0YZSJ8D932JmqDs9wbM3xFBl1TCLEJ0ObH3-StWW9W1LUZGUlAy4ZF8A/exec"
 
 // 🔹 Mapeamento de tokens simples para nomes completos
 const TOKEN_MAP = {
